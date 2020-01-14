@@ -57,4 +57,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<modules>
+		<module>models</module>
+	</modules>
 </project>

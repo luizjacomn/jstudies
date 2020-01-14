@@ -5,3 +5,8 @@
 /.classpath
 /.project
 /.tern-project
+
+models/.settings
+models/.classpath
+models/.factorypath
+models/.project
