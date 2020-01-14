@@ -1,6 +1,6 @@
 package com.luizjacomn.models;
 
-import java.math.BigDecimal;
+import javax.money.MonetaryAmount;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,6 +17,6 @@ public class Produto {
 
 	private String nome;
 	
-	private BigDecimal preco;
+	private MonetaryAmount preco;
 	
 }

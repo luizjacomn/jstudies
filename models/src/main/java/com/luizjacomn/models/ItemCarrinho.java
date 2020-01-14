@@ -1,6 +1,6 @@
 package com.luizjacomn.models;
 
-import java.math.BigDecimal;
+import javax.money.MonetaryAmount;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class ItemCarrinho {
 	
 	private int quantidade;
 	
-	public BigDecimal valor() {
-		return produto.getPreco().multiply(BigDecimal.valueOf(quantidade));
+	public MonetaryAmount valor() {
+		return produto.getPreco().multiply(quantidade);
 	}
 }
