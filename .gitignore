@@ -1,12 +1,18 @@
+#jstudies root project
 /target/
-
-
 /.settings
 /.classpath
 /.project
 /.tern-project
 
+# models module
 models/.settings
 models/.classpath
 models/.factorypath
 models/.project
+
+# threads module
+threads/.settings
+threads/.project
+threads/.classpath
+threads/target/

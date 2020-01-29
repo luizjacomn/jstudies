@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>models</module>
+		<module>threads</module>
 	</modules>
 
 	<properties>
