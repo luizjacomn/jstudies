@@ -2,7 +2,7 @@ package com.luizjacomn.threads.main;
 
 import com.luizjacomn.threads.task.BuscarEmArquivo;
 
-public class Main {
+public class MainBusca {
 	public static void main(String[] args) {
 		String busca = "it";
 
