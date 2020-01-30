@@ -13,6 +13,7 @@ public class ImprimirListaConvidadosTask implements Runnable {
 	@Override
 	public void run() {
 		synchronized (lista) {
+			// só deve aguardar caso a lista não tenha sido preenchida
 			if (!lista.isPreenchida()) {
 				try {
 					System.out.println("aguardando preenchimento da lista...");
