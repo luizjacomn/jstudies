@@ -1,65 +1,107 @@
 package com.luizjacomn.threads.banheiro;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Banheiro {
-	
-	private Lock locker = new ReentrantLock();
+
+	private boolean isSujo = true;
 
 	public void numero1() {
-		inicio();
-		
-		locker.lock();
+		String nome = Thread.currentThread().getName();
 
-		antes();
+		inicio(nome);
 
-		System.out.println(String.format("%s fazendo numero 1...", Thread.currentThread().getName()));
+		synchronized (this) {
 
-		try {
+			while (isSujo) {
+				esperaLimpeza(nome);
+			}
+
+			antes(nome);
+			System.out.println(String.format("%s fazendo numero 1...", Thread.currentThread().getName()));
+
 			// 3 segundos
-			Thread.sleep(3_000);
-		} catch (InterruptedException e) {
-			System.out.println(e.getMessage());
-		}
+			aguardar(3);
 
-		depois();
-		
-		locker.unlock();
+			depois(nome);
+		}
 	}
 
 	public void numero2() {
-		inicio();
-		
-		locker.lock();
-		
-		antes();
+		String nome = Thread.currentThread().getName();
 
-		System.out.println(String.format("%s fazendo numero 2...", Thread.currentThread().getName()));
+		inicio(nome);
 
-		// 5 segundos
+		synchronized (this) {
+			while (isSujo) {
+				esperaLimpeza(nome);
+			}
+
+			antes(nome);
+			System.out.println(String.format("%s fazendo numero 2...", nome));
+
+			// 5 segundos
+			aguardar(5);
+
+			depois(nome);
+		}
+	}
+
+	public void limparBanheiro() {
+		String nome = Thread.currentThread().getName();
+
+		inicio(nome);
+
+		synchronized (this) {
+			if (!isSujo) {
+				System.out.println(String.format("%s: banheiro não está sujo, não preciso limpar...", nome));
+				System.out.println("-----------------------------------------------------------");
+				return;
+			}
+
+			antes(nome);
+			System.out.println(String.format("%s limpando banheiro...", nome));
+			this.isSujo = false;
+
+			// 10 segundos
+			aguardar(10);
+
+			this.notifyAll();
+			
+			System.out.println(String.format("%s saindo do banheiro...", nome));
+			System.out.println("-----------------------------------------------------------");
+		}
+	}
+
+	private void inicio(String nome) {
+		System.out.println(String.format("%s batendo na porta...", nome));
+	}
+
+	private void antes(String nome) {
+		System.out.println(String.format("\n%s entrando no banheiro...", nome));
+	}
+
+	private void depois(String nome) {
+		this.isSujo = true;
+		
+		System.out.println(String.format("%s dando descarga...", nome));
+		System.out.println(String.format("%s lavando as mãos...", nome));
+		System.out.println(String.format("%s saindo do banheiro...", nome));
+		System.out.println("-----------------------------------------------------------");
+	}
+
+	private void esperaLimpeza(String nome) {
+		System.out.println(String.format("%s: ecaa... Banheiro está sujo!", nome));
 		try {
-			Thread.sleep(5_000);
+			this.wait();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		depois();
-		
-		locker.unlock();
 	}
 	
-	private void inicio() {
-		System.out.println(String.format("%s batendo na porta...", Thread.currentThread().getName()));
-	}
-
-	private void antes() {
-		System.out.println(String.format("\n%s entrando no banheiro...", Thread.currentThread().getName()));
-	}
-
-	private void depois() {
-		System.out.println(String.format("%s lavando as mãos...", Thread.currentThread().getName()));
-		System.out.println(String.format("%s saindo do banheiro...", Thread.currentThread().getName()));
-		System.out.println("-----------------------------------------------------------");
+	private void aguardar(int segundos) {
+		try {
+			Thread.sleep(segundos * 1_000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
