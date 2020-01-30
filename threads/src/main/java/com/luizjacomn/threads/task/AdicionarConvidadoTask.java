@@ -1,21 +1,21 @@
 package com.luizjacomn.threads.task;
 
-import java.util.List;
+import com.luizjacomn.threads.convidados.ListaConvidados;
 
 public class AdicionarConvidadoTask implements Runnable {
 
-	private List<String> lista;
+	private ListaConvidados lista;
 	private int numeroThread;
 
-	public AdicionarConvidadoTask(List<String> lista, int numeroThread) {
+	public AdicionarConvidadoTask(ListaConvidados lista, int numeroThread) {
 		this.lista = lista;
 		this.numeroThread = numeroThread;
 	}
 	
 	@Override
 	public void run() {
-		for (int i = 0; i < 100; i++) {
-			lista.add(String.format("Thread %d - adicionando convidado: %d...", numeroThread, i));
+		for (int i = 0; i < 10; i++) {
+			lista.addConvidado(String.format("Thread %d - adicionando convidado: %d...", numeroThread, i));
 		}
 	}
 
