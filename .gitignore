@@ -16,3 +16,10 @@ threads/.settings
 threads/.project
 threads/.classpath
 threads/target/
+
+
+# concurrency module
+concurrency/.settings
+concurrency/.project
+concurrency/.classpath
+concurrency/target/
