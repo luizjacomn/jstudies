@@ -4,7 +4,7 @@ import com.luizjacomn.threads.task.BuscarEmArquivo;
 
 public class MainBusca {
 	public static void main(String[] args) {
-		String busca = "it";
+		String busca = "nar";
 
 		Thread buscaJogadores = new Thread(new BuscarEmArquivo("jogadores-futebol.txt", busca));
 		Thread buscaPilotos = new Thread(new BuscarEmArquivo("pilotos.txt", busca));

@@ -1,4 +1,4 @@
-package com.luizjacomn.threads.swing;
+package com.luizjacomn.threads.calculadora;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

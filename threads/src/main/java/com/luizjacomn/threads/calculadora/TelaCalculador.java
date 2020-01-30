@@ -1,4 +1,4 @@
-package com.luizjacomn.threads.swing;
+package com.luizjacomn.threads.calculadora;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

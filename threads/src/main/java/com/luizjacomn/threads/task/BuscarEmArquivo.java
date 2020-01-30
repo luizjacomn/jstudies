@@ -37,7 +37,7 @@ public class BuscarEmArquivo implements Runnable {
 			LOGGER.info(builder.append("\n").toString());
 
 			if (!found)
-				LOGGER.warning(String.format("Nenhum resultado encontrado no arquivo \"%s\" para o termo \"%s\".",
+				LOGGER.warning(String.format("Nenhum resultado encontrado no arquivo \"%s\" para o termo \"%s\".\n",
 						nomeArquivo, termo));
 		}
 	}
