@@ -1,6 +1,8 @@
 package com.luizjacomn.concurrency.server;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class TaskProvider implements Runnable {
 
@@ -12,13 +14,19 @@ public class TaskProvider implements Runnable {
 
 	@Override
 	public void run() {
-		
-		System.out.println(String.format("Fornecendo tarefas para %s", socket));
-		
 		try {
+			System.out.println(String.format("Fornecendo tarefas para %s", socket));
+
+			Scanner scanner = new Scanner(socket.getInputStream());
+			
+			while (scanner.hasNextLine()) {
+				String comandoRecebido = scanner.nextLine();
+				System.out.println(comandoRecebido);
+			}
+
 			Thread.sleep(20_000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (InterruptedException | IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
