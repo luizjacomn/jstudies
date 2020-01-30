@@ -1,43 +1,52 @@
 package com.luizjacomn.threads.banheiro;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Banheiro {
+	
+	private Lock locker = new ReentrantLock();
 
 	public void numero1() {
 		inicio();
 		
-		synchronized (this) {
-			antes();
+		locker.lock();
 
-			System.out.println(String.format("%s fazendo numero 1...", Thread.currentThread().getName()));
+		antes();
 
-			try {
-				// 3 segundos
-				Thread.sleep(3_000);
-			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
-			}
+		System.out.println(String.format("%s fazendo numero 1...", Thread.currentThread().getName()));
 
-			depois();
+		try {
+			// 3 segundos
+			Thread.sleep(3_000);
+		} catch (InterruptedException e) {
+			System.out.println(e.getMessage());
 		}
+
+		depois();
+		
+		locker.unlock();
 	}
 
 	public void numero2() {
 		inicio();
 		
-		synchronized (this) {
-			antes();
+		locker.lock();
+		
+		antes();
 
-			System.out.println(String.format("%s fazendo numero 2...", Thread.currentThread().getName()));
+		System.out.println(String.format("%s fazendo numero 2...", Thread.currentThread().getName()));
 
-			// 5 segundos
-			try {
-				Thread.sleep(5_000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			depois();
+		// 5 segundos
+		try {
+			Thread.sleep(5_000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
+		depois();
+		
+		locker.unlock();
 	}
 	
 	private void inicio() {
