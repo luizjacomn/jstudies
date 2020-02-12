@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class TaskProvider implements Runnable {
 
+	private TaskServer server;
 	private Socket socket;
 
-	public TaskProvider(Socket socket) {
+	public TaskProvider(TaskServer server, Socket socket) {
+		this.server = server;
 		this.socket = socket;
 	}
 
@@ -19,12 +21,12 @@ public class TaskProvider implements Runnable {
 			System.out.println(String.format("Fornecendo tarefas para %s", socket));
 
 			Scanner scanner = new Scanner(socket.getInputStream());
-			
+
 			PrintStream out = new PrintStream(socket.getOutputStream());
-			
-			while (scanner.hasNextLine()) {
+
+			while (server.isRunning() && scanner.hasNextLine()) {
 				String comandoRecebido = scanner.nextLine();
-				
+
 				switch (comandoRecebido) {
 				case "c1":
 					out.println("imprimindo c1");
@@ -32,13 +34,20 @@ public class TaskProvider implements Runnable {
 				case "c2":
 					out.println("imprimindo c2");
 					break;
+				case "off":
+					server.stop();
+					out.println("Servidor desligado!");
+					break;
 				default:
 					out.println("Comando não encontrado!");
 					break;
 				}
-				
+
 				System.out.println(String.format("Cliente: %s", socket.getRemoteSocketAddress()));
-				System.out.println(String.format("Comando recebido: %s", comandoRecebido));
+				if (comandoRecebido.equals("Encerrando cliente..."))
+					System.out.println(comandoRecebido);
+				else
+					System.out.println(String.format("Comando recebido: %s", comandoRecebido));
 				System.out.println("------------------------------------------------");
 			}
 

@@ -3,7 +3,6 @@ package com.luizjacomn.concurrency.client;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class TaskClient {
@@ -21,13 +20,20 @@ public class TaskClient {
 				System.out.println("Digite \\q para finalizar...");
 
 				while (scanner.hasNextLine()) {
-					String comandoRecebido = scanner.nextLine();
+					String comandoParaEnvio = scanner.nextLine();
 
-					if ("\\q".equals(comandoRecebido.trim()))
+					if ("\\q".equals(comandoParaEnvio.trim())) {
+						out.println("Encerrando cliente...");						
 						break;
+					}
 
-					System.out.println("Enviando ao servidor...");
-					out.println(comandoRecebido);
+					if (socket.isClosed()) {
+						System.out.println("Servidor sem resposta...");
+						break;
+					} else {
+						System.out.println("Enviando ao servidor...");
+						out.println(comandoParaEnvio);
+					}
 				}
 
 				out.close();
