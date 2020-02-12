@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class TaskProvider implements Runnable {
 
+	private TaskServer server;
 	private Socket socket;
 
-	public TaskProvider(Socket socket) {
+	public TaskProvider(TaskServer server, Socket socket) {
+		this.server = server;
 		this.socket = socket;
 	}
 
@@ -31,6 +33,10 @@ public class TaskProvider implements Runnable {
 					break;
 				case "c2":
 					out.println("imprimindo c2");
+					break;
+				case "off":
+					server.stop();
+					out.println("Servidor desligado!");
 					break;
 				default:
 					out.println("Comando não encontrado!");
