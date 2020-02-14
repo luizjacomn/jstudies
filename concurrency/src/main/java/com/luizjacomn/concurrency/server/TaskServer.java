@@ -16,7 +16,7 @@ public final class TaskServer {
 	public TaskServer() throws IOException {
 		System.out.println("------- INICIANDO SERVIDOR -------");
 		this.serverSocket = new ServerSocket(12345);
-		this.threadpool = Executors.newCachedThreadPool();
+		this.threadpool = Executors.newCachedThreadPool(new CustomThreadFactory());
 		this.running = new AtomicBoolean(true);
 	}
 
@@ -26,7 +26,7 @@ public final class TaskServer {
 				Socket socket = serverSocket.accept();
 				System.out.println("CONEXÃO ESTABELECIDA COM NOVO CLIENTE NA PORTA " + socket.getPort());
 
-				TaskProvider provider = new TaskProvider(this, socket);
+				TaskProvider provider = new TaskProvider(this, socket, threadpool);
 				threadpool.execute(provider);
 			} catch (SocketException e) {
 				System.out.println("Desligando o servidor...");
