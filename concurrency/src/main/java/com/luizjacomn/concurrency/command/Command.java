@@ -22,8 +22,8 @@ public abstract class Command {
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
-		throw new RuntimeException("exceção no comando");
-//		out.println(String.format("%s executado!", getClass().getSimpleName()));
+		
+		out.println(String.format("%s executado!", getClass().getSimpleName()));
 	}
 	
 }

@@ -11,7 +11,7 @@ public class CustomThreadFactory implements ThreadFactory {
 
 	@Override
 	public Thread newThread(Runnable r) {
-		Thread thread = new Thread(r, NAMES[new Random().nextInt(NAMES.length - 1)]);
+		Thread thread = new Thread(r, NAMES[new Random().nextInt(NAMES.length)]);
 		
 		thread.setUncaughtExceptionHandler(new ThreadExceptionHandler());
 		
