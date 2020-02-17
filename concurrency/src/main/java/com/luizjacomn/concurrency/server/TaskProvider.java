@@ -5,9 +5,12 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
+import com.luizjacomn.concurrency.command.BdCommand;
 import com.luizjacomn.concurrency.command.C1Command;
-import com.luizjacomn.concurrency.command.C2Command;
+import com.luizjacomn.concurrency.command.WsCommand;
+import com.luizjacomn.concurrency.server.result.WsBdResultHandler;
 
 public class TaskProvider implements Runnable {
 
@@ -49,8 +52,12 @@ public class TaskProvider implements Runnable {
 					threadpool.execute(c1);
 					break;
 				case "c2":
-					C2Command c2 = new C2Command(out);
-					threadpool.execute(c2);
+					WsCommand c2WS = new WsCommand(out);
+					BdCommand c2BD = new BdCommand(out);
+					Future<String> futureWS = threadpool.submit(c2WS);
+					Future<String> futureBD = threadpool.submit(c2BD);
+					
+					threadpool.submit(new WsBdResultHandler(futureWS, futureBD, out));
 					break;
 				case "off":
 					server.stop();
