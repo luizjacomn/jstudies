@@ -1,9 +1,9 @@
 package com.luizjacomn.concurrency.server;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -17,11 +17,13 @@ public class TaskProvider implements Runnable {
 	private TaskServer server;
 	private Socket socket;
 	private ExecutorService threadpool;
+	private BlockingQueue<String> filaDeComandos;
 
-	public TaskProvider(TaskServer server, Socket socket, ExecutorService threadpool) {
+	public TaskProvider(TaskServer server, Socket socket, ExecutorService threadpool, BlockingQueue<String> filaDeComandos) {
 		this.server = server;
 		this.socket = socket;
 		this.threadpool = threadpool;
+		this.filaDeComandos = filaDeComandos;
 	}
 
 	@Override
@@ -59,6 +61,10 @@ public class TaskProvider implements Runnable {
 					
 					threadpool.submit(new WsBdResultHandler(futureWS, futureBD, out));
 					break;
+				case "c3":
+					filaDeComandos.put(comandoRecebido);
+					out.println("Comando c3 adicionado à fila...");
+					break;
 				case "off":
 					server.stop();
 					out.println("Servidor desligado!");
@@ -71,7 +77,7 @@ public class TaskProvider implements Runnable {
 
 			scanner.close();
 			out.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
